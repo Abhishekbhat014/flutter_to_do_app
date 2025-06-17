@@ -49,6 +49,8 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (context, index) {
                         var task = myBox.getAt(index);
                         var isCompleted = task["isCompleted"] ?? false;
+                        var isFavourite = task["isFavourite"] ?? false;
+                        var priority = task["priority"] ?? "Normal";
                         return Column(
                           children: [
                             Card(
@@ -57,7 +59,8 @@ class _HomePageState extends State<HomePage> {
                                 vertical: 8,
                               ),
                               color: Constants.whiteColor,
-                              child: Container(
+                              child: AnimatedContainer(
+                                duration: Duration(milliseconds: 500),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   color:
@@ -97,6 +100,7 @@ class _HomePageState extends State<HomePage> {
                                                       ? TextDecoration
                                                           .lineThrough
                                                       : TextDecoration.none,
+                                              decorationThickness: 2.0,
                                             ),
                                           ),
                                           const SizedBox(height: 4),
@@ -110,10 +114,28 @@ class _HomePageState extends State<HomePage> {
                                         ],
                                       ),
                                     ),
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          isFavourite = isFavourite!;
+                                        });
+                                      },
+                                      child: Icon(
+                                        isFavourite
+                                            ?FontAwesomeIcons.solidHeart
+                                            : FontAwesomeIcons.heart,
+                                            color: isFavourite
+                                            ?Colors.red
+                                            :Colors.black,
+                                      ),
+                                    ),
                                     Text(
                                       task["priority"] ?? "",
-                                      style: const TextStyle(
-                                        color: Colors.black,
+                                      style: TextStyle(
+                                        color:
+                                            priority == "High"
+                                                ? Colors.deepOrange
+                                                : Colors.black,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
