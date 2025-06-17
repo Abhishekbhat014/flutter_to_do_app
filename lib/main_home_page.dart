@@ -36,29 +36,7 @@ class _MainHomePageState extends State<MainHomePage> {
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             child: InkWell(
-              onTap: () async {
-                DateTime? selectedDate = await showDatePicker(
-                  context: context,
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime.now(),
-                  builder: (context, child) {
-                    return Theme(
-                      data: Theme.of(context).copyWith(
-                        colorScheme: ColorScheme.dark(
-                          primary: Colors.blueAccent,
-                          onPrimary: Colors.white,
-                          surface: Constants.containerColor,
-                          onSurface: Colors.white,
-                        ),
-                        dialogTheme: DialogThemeData(
-                          backgroundColor: Constants.containerColor,
-                        ),
-                      ),
-                      child: child!,
-                    );
-                  },
-                );
-              },
+              onTap: () async {},
               child: Icon(
                 FontAwesomeIcons.solidCalendarDays,
                 color: Constants.whiteColor,
