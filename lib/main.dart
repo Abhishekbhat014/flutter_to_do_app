@@ -24,10 +24,11 @@ class MyApp extends StatelessWidget {
       title: "To Do List",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'WDXLLubrifontTC',
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
+        fontFamily: 'WDXLLubrifontTC',
+        textTheme: const TextTheme(bodyMedium: TextStyle(fontSize: 16)),
       ),
       home: MainHomePage(),
     );

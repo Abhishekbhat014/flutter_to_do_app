@@ -40,85 +40,106 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               )
-              : ListView.builder(
-                itemCount: myBox.length,
-                itemBuilder: (context, index) {
-                  var task = myBox.getAt(index);
-                  var isCompleted = task["isCompleted"] ?? false;
-                  return Column(
-                    children: [
-                      Card(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        color: Constants.whiteColor,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 5,
-                            vertical: 8,
-                          ),
-                          padding: const EdgeInsets.all(12),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Checkbox(
-                                shape: CircleBorder(),
-                                activeColor: Colors.green,
-                                checkColor: Colors.green,
-                                value: isCompleted,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    var updatedTask = Map<String, dynamic>.from(
-                                      task,
-                                    );
-                                    updatedTask["isCompleted"] = value!;
-                                    myBox.putAt(index, updatedTask);
-                                  });
-                                },
+              : Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: ListView.builder(
+                      itemCount: myBox.length,
+                      itemBuilder: (context, index) {
+                        var task = myBox.getAt(index);
+                        var isCompleted = task["isCompleted"] ?? false;
+                        return Column(
+                          children: [
+                            Card(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 8,
                               ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Column(
+                              color: Constants.whiteColor,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color:
+                                      isCompleted ? Colors.green : Colors.white,
+                                ),
+                                padding: const EdgeInsets.all(10),
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      task["title"] ?? "",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        decoration:
-                                            isCompleted
-                                                ? TextDecoration.lineThrough
-                                                : TextDecoration.none,
+                                    Checkbox(
+                                      shape: CircleBorder(),
+                                      activeColor: Colors.green,
+                                      value: isCompleted,
+                                      onChanged: (bool? value) {
+                                        setState(() {
+                                          var updatedTask =
+                                              Map<String, dynamic>.from(task);
+                                          updatedTask["isCompleted"] = value!;
+                                          myBox.putAt(index, updatedTask);
+                                        });
+                                      },
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            task["title"] ?? "",
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              decoration:
+                                                  isCompleted
+                                                      ? TextDecoration
+                                                          .lineThrough
+                                                      : TextDecoration.none,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            task["desc"] ?? "",
+                                            style: const TextStyle(
+                                              color: Colors.black87,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(height: 4),
                                     Text(
-                                      task["desc"] ?? "",
+                                      task["priority"] ?? "",
                                       style: const TextStyle(
-                                        color: Colors.black87,
-                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Text(
-                                task["priority"] ?? "",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Divider(
+                      thickness: 2,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      "Completed task will be placed here...",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
     );
   }
