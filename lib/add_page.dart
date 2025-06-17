@@ -77,6 +77,7 @@ class _AddPageState extends State<AddPage> {
       "desc": _descController.text.trim(),
       "priority": _priority,
       "dueDate": _dueDate!.toIso8601String(),
+      "isCompleted":false
     };
 
     var status = await myBox.add(task);

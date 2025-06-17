@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var myBox = Hive.box("toDoListBox");
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +44,7 @@ class _HomePageState extends State<HomePage> {
                 itemCount: myBox.length,
                 itemBuilder: (context, index) {
                   var task = myBox.getAt(index);
+                  var isCompleted = task["isCompleted"] ?? false;
                   return Column(
                     children: [
                       Card(
@@ -53,18 +53,66 @@ class _HomePageState extends State<HomePage> {
                           vertical: 8,
                         ),
                         color: Constants.whiteColor,
-                        child: ListTile(
-                          title: Text(
-                            task["title"] ?? "",
-                            style: TextStyle(color: Colors.black),
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 5,
+                            vertical: 8,
                           ),
-                          subtitle: Text(
-                            task["desc"] ?? "",
-                            style: TextStyle(color: Colors.black87),
-                          ),
-                          trailing: Text(
-                            task["priority"] ?? "",
-                            style: TextStyle(color: Colors.black),
+                          padding: const EdgeInsets.all(12),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Checkbox(
+                                shape: CircleBorder(),
+                                activeColor: Colors.green,
+                                checkColor: Colors.green,
+                                value: isCompleted,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    var updatedTask = Map<String, dynamic>.from(
+                                      task,
+                                    );
+                                    updatedTask["isCompleted"] = value!;
+                                    myBox.putAt(index, updatedTask);
+                                  });
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      task["title"] ?? "",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        decoration:
+                                            isCompleted
+                                                ? TextDecoration.lineThrough
+                                                : TextDecoration.none,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      task["desc"] ?? "",
+                                      style: const TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Text(
+                                task["priority"] ?? "",
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -72,7 +120,6 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
               ),
-      
     );
   }
 }
