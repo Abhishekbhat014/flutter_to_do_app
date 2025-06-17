@@ -128,9 +128,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
-                    child: Divider(
-                      thickness: 2,
-                    ),
+                    child: Divider(thickness: 2),
                   ),
                   Expanded(
                     flex: 1,
