@@ -117,19 +117,22 @@ class _HomePageState extends State<HomePage> {
                                     InkWell(
                                       onTap: () {
                                         setState(() {
-      isFavourite = !isFavourite; 
-      var updatedTask = Map<String, dynamic>.from(task);
-      updatedTask["isFavourite"] = isFavourite;
-      myBox.putAt(index, updatedTask); 
-    });
+                                          isFavourite = !isFavourite;
+                                          var updatedTask =
+                                              Map<String, dynamic>.from(task);
+                                          updatedTask["isFavourite"] =
+                                              isFavourite;
+                                          myBox.putAt(index, updatedTask);
+                                        });
                                       },
                                       child: Icon(
                                         isFavourite
-                                            ?FontAwesomeIcons.solidHeart
+                                            ? FontAwesomeIcons.solidHeart
                                             : FontAwesomeIcons.heart,
-                                            color: isFavourite
-                                            ?Colors.red
-                                            :Colors.black,
+                                        color:
+                                            isFavourite
+                                                ? Colors.red
+                                                : Colors.black,
                                       ),
                                     ),
                                     Text(
