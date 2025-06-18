@@ -117,8 +117,11 @@ class _HomePageState extends State<HomePage> {
                                     InkWell(
                                       onTap: () {
                                         setState(() {
-                                          isFavourite = isFavourite!;
-                                        });
+      isFavourite = !isFavourite; 
+      var updatedTask = Map<String, dynamic>.from(task);
+      updatedTask["isFavourite"] = isFavourite;
+      myBox.putAt(index, updatedTask); 
+    });
                                       },
                                       child: Icon(
                                         isFavourite

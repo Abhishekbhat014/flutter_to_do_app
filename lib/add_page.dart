@@ -42,12 +42,10 @@ class _AddPageState extends State<AddPage> {
         );
       },
     );
-    if (picked != null) {
-      setState(() {
-        _dueDate = picked;
-      });
+    setState(() {
+      _dueDate = picked;
+    });
     }
-  }
 
   void _saveTask() async {
     if (_taskController.text.trim().isEmpty) {
