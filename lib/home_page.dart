@@ -1,3 +1,5 @@
+import 'dart:nativewrappers/_internal/vm/lib/async_patch.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive/hive.dart';
@@ -12,6 +14,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var myBox = Hive.box("toDoListBox");
+  List<Map<String, dynamic>> completedTasks = [];
+  void shiftTask(int index) {
+    completedTasks.add(Map<String, dynamic>.from(myBox.getAt(index)));
+
+    /// myBox.deleteAt(index);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,9 +58,9 @@ class _HomePageState extends State<HomePage> {
                       itemCount: myBox.length,
                       itemBuilder: (context, index) {
                         var task = myBox.getAt(index);
-                        var isCompleted = task["isCompleted"] ?? false;
+                        var isChecked = task["isChecked"] ?? false;
                         var isFavourite = task["isFavourite"] ?? false;
-                        var priority = task["priority"] ?? "Normal";
+                        var priority = task["priority"];
                         return Column(
                           children: [
                             Card(
@@ -64,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   color:
-                                      isCompleted ? Colors.green : Colors.white,
+                                      isChecked ? Colors.green : Colors.white,
                                 ),
                                 padding: const EdgeInsets.all(10),
                                 child: Row(
@@ -73,13 +83,14 @@ class _HomePageState extends State<HomePage> {
                                     Checkbox(
                                       shape: CircleBorder(),
                                       activeColor: Colors.green,
-                                      value: isCompleted,
+                                      value: isChecked,
                                       onChanged: (bool? value) {
                                         setState(() {
-                                          var updatedTask =
-                                              Map<String, dynamic>.from(task);
-                                          updatedTask["isCompleted"] = value!;
-                                          myBox.putAt(index, updatedTask);
+                                          Future.delayed(
+                                            Duration(seconds: 2),
+                                            () {},
+                                          );
+                                          shiftTask(index);
                                         });
                                       },
                                     ),
@@ -96,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
                                               decoration:
-                                                  isCompleted
+                                                  isChecked
                                                       ? TextDecoration
                                                           .lineThrough
                                                       : TextDecoration.none,
@@ -115,16 +126,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                     InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          isFavourite = !isFavourite;
-                                          var updatedTask =
-                                              Map<String, dynamic>.from(task);
-                                          updatedTask["isFavourite"] =
-                                              isFavourite;
-                                          myBox.putAt(index, updatedTask);
-                                        });
-                                      },
+                                      onTap: () {},
                                       child: Icon(
                                         isFavourite
                                             ? FontAwesomeIcons.solidHeart
