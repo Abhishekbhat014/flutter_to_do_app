@@ -17,8 +17,6 @@ class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> completedTasks = [];
   void shiftTask(int index) {
     completedTasks.add(Map<String, dynamic>.from(myBox.getAt(index)));
-
-    /// myBox.deleteAt(index);
     setState(() {});
   }
 
