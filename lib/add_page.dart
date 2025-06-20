@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
@@ -19,14 +18,6 @@ class _AddPageState extends State<AddPage> {
   final TextEditingController _descController = TextEditingController();
   DateTime? _dueDate;
   String _priority = 'Normal';
-  final Map<String, IconData> iconOptions = {
-    "Work": FontAwesomeIcons.listUl,
-    "Office": FontAwesomeIcons.briefcase,
-    "Study": FontAwesomeIcons.bookOpenReader,
-    "Love": FontAwesomeIcons.solidHeart,
-    "Star": FontAwesomeIcons.star,
-    "Fitness": FontAwesomeIcons.dumbbell,
-  };
   String _selectedIconKey = "Work";
 
   Future<void> _pickDate() async {
@@ -112,6 +103,7 @@ class _AddPageState extends State<AddPage> {
     _descController.clear();
     _priority = "Normal";
     _dueDate = null;
+    _selectedIconKey = "Work";
     setState(() {});
   }
 

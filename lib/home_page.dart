@@ -91,7 +91,10 @@ class _HomePageState extends State<HomePage> {
                                   var isFavourite =
                                       task["isFavourite"] ?? false;
                                   var priority = task["priority"];
-
+                                  String iconKey = task["icon"];
+                                  IconData taskIcon =
+                                      iconOptions[iconKey] ??
+                                      FontAwesomeIcons.listUl;
                                   return Card(
                                     key: ValueKey(
                                       "active-${task["key"]}-${task["isChecked"]}",
@@ -131,6 +134,18 @@ class _HomePageState extends State<HomePage> {
                                             },
                                           ),
                                           const SizedBox(width: 8),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                              right: 12,
+                                              top: 8,
+                                            ),
+                                            child: Icon(
+                                              taskIcon,
+                                              size: 24,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment:
@@ -237,7 +252,10 @@ class _HomePageState extends State<HomePage> {
                                   var isFavourite =
                                       task["isFavourite"] ?? false;
                                   var priority = task["priority"];
-
+                                  String iconKey = task["icon"];
+                                  IconData taskIcon =
+                                      iconOptions[iconKey] ??
+                                      FontAwesomeIcons.listUl;
                                   return Card(
                                     key: ValueKey(
                                       "completed-${task["key"]}-${task["isChecked"]}",
@@ -277,6 +295,18 @@ class _HomePageState extends State<HomePage> {
                                             },
                                           ),
                                           const SizedBox(width: 8),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                              right: 12,
+                                              top: 8,
+                                            ),
+                                            child: Icon(
+                                              taskIcon,
+                                              size: 24,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment:
