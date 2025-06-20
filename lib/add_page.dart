@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
@@ -18,6 +19,15 @@ class _AddPageState extends State<AddPage> {
   final TextEditingController _descController = TextEditingController();
   DateTime? _dueDate;
   String _priority = 'Normal';
+  final Map<String, IconData> iconOptions = {
+    "Work": FontAwesomeIcons.listUl,
+    "Office": FontAwesomeIcons.briefcase,
+    "Study": FontAwesomeIcons.bookOpenReader,
+    "Love": FontAwesomeIcons.solidHeart,
+    "Star": FontAwesomeIcons.star,
+    "Fitness": FontAwesomeIcons.dumbbell,
+  };
+  String _selectedIconKey = "Work";
 
   Future<void> _pickDate() async {
     DateTime? picked = await showDatePicker(
@@ -45,7 +55,7 @@ class _AddPageState extends State<AddPage> {
     setState(() {
       _dueDate = picked;
     });
-    }
+  }
 
   void _saveTask() async {
     if (_taskController.text.trim().isEmpty) {
@@ -77,6 +87,7 @@ class _AddPageState extends State<AddPage> {
       "dueDate": _dueDate!.toIso8601String(),
       "isCompleted": false,
       "isFavourite": false,
+      "icon": _selectedIconKey,
     };
 
     var status = await myBox.add(task);
@@ -209,6 +220,42 @@ class _AddPageState extends State<AddPage> {
                 ),
               ),
               SizedBox(height: 30),
+              Text(
+                "Icon",
+                style: TextStyle(fontSize: 16, color: Constants.whiteColor),
+              ),
+              SizedBox(height: 8),
+              DropdownButtonFormField<String>(
+                value: _selectedIconKey,
+                hint: Text("Select Icon"),
+                items:
+                    iconOptions.entries.map((entry) {
+                      return DropdownMenuItem<String>(
+                        value: entry.key,
+                        child: Row(
+                          children: [
+                            Icon(entry.value, size: 20),
+                            SizedBox(width: 8),
+                            Text(entry.key),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedIconKey = value!;
+                  });
+                },
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
 
               SizedBox(
                 width: double.infinity,
