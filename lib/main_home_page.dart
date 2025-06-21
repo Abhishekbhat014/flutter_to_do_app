@@ -16,14 +16,51 @@ class MainHomePage extends StatefulWidget {
 
 class _MainHomePageState extends State<MainHomePage> {
   int _currentIndex = 0;
-
+  DateTime? pickedDate = DateTime.now();
   final List<Widget> _pages = [
     HomePage(),
-    FavouritePage(),
+    FavouritePage(favTasks: favoriteTask),
     AddPage(),
     NotificationPage(),
     ProfilePage(),
   ];
+
+  static get favoriteTask => null;
+  String _getDisplayDate(DateTime? date) {
+    if (date == null) return "";
+
+    DateTime now = DateTime.now();
+
+    bool isToday =
+        date.year == now.year && date.month == now.month && date.day == now.day;
+
+    if (isToday) {
+      return "Today";
+    } else {
+      return "${date.day.toString().padLeft(2, '0')} ${_getWeekDay(date.weekday)}";
+    }
+  }
+
+  String _getWeekDay(int weekday) {
+    switch (weekday) {
+      case 1:
+        return "Mon";
+      case 2:
+        return "Tue";
+      case 3:
+        return "Wed";
+      case 4:
+        return "Thu";
+      case 5:
+        return "Fri";
+      case 6:
+        return "Sat";
+      case 7:
+        return "Sun";
+      default:
+        return "";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +68,25 @@ class _MainHomePageState extends State<MainHomePage> {
       appBar: AppBar(
         backgroundColor: Constants.containerColor,
         actions: [
+          Text(
+            _getDisplayDate(pickedDate),
+            style: TextStyle(color: Constants.whiteColor),
+          ),
+          SizedBox(width: 8),
           InkWell(
             onTap: () {},
             highlightColor: Colors.transparent,
             splashColor: Colors.transparent,
             child: InkWell(
-              onTap: () async {},
+              onTap: () async {
+                pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2100),
+                );
+                setState(() {});
+              },
               child: Icon(
                 FontAwesomeIcons.solidCalendarDays,
                 color: Constants.whiteColor,

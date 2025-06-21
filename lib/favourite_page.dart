@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class FavouritePage extends StatefulWidget {
-  const FavouritePage({super.key});
+  final List<Map<String, dynamic>> favTasks;
+
+  const FavouritePage({super.key, required this.favTasks});
 
   @override
   State<FavouritePage> createState() => _FavouritePageState();

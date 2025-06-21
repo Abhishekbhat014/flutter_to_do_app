@@ -14,14 +14,20 @@ class _HomePageState extends State<HomePage> {
   var myBox = Hive.box("toDoListBox");
   List<Map<String, dynamic>> activeTask = [];
   List<Map<String, dynamic>> completedTask = [];
+  List<Map<String, dynamic>> favoriteTask = [];
 
   void loadTasks() {
     activeTask.clear();
     completedTask.clear();
+    favoriteTask.clear();
 
     for (int i = 0; i < myBox.length; i++) {
       final task = Map<String, dynamic>.from(myBox.getAt(i));
       task["key"] = i;
+
+      if (task["isFavourite"] == true) {
+        favoriteTask.add(task);
+      }
 
       if (task["isChecked"] == true) {
         completedTask.add(task);
@@ -300,10 +306,17 @@ class _HomePageState extends State<HomePage> {
                                               right: 12,
                                               top: 8,
                                             ),
-                                            child: Icon(
-                                              taskIcon,
-                                              size: 24,
-                                              color: Colors.black87,
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                right: 12,
+                                                top: 8,
+                                              ),
+
+                                              child: Icon(
+                                                taskIcon,
+                                                size: 24,
+                                                color: Colors.black87,
+                                              ),
                                             ),
                                           ),
 
@@ -352,6 +365,7 @@ class _HomePageState extends State<HomePage> {
                                                     task["key"],
                                                     updatedTask,
                                                   );
+
                                                   loadTasks();
                                                 },
                                                 child: Icon(
