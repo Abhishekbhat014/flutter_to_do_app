@@ -8,7 +8,7 @@ import 'package:todolist/task_database.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  TaskDB.initDB();
+  await TaskDB.init();
   runApp(
     ScreenUtilInit(
       designSize: Size(360, 690),

@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                               ? Center(
                                 key: ValueKey('empty-active'),
                                 child: Text(
-                                  "No active tasks!",
+                                  "No active tasks. You're all caught up!",
                                   style: TextStyle(color: Colors.white70),
                                 ),
                               )
@@ -101,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                                   IconData taskIcon =
                                       iconOptions[iconKey] ??
                                       FontAwesomeIcons.listUl;
+
                                   return Card(
                                     key: ValueKey(
                                       "active-${task["key"]}-${task["isChecked"]}",
@@ -122,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                                       padding: const EdgeInsets.all(10),
                                       child: Row(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Checkbox(
                                             shape: CircleBorder(),
@@ -140,10 +141,9 @@ class _HomePageState extends State<HomePage> {
                                             },
                                           ),
                                           const SizedBox(width: 8),
-                                          Container(
-                                            margin: EdgeInsets.only(
+                                          Padding(
+                                            padding: const EdgeInsets.only(
                                               right: 12,
-                                              top: 8,
                                             ),
                                             child: Icon(
                                               taskIcon,
@@ -151,7 +151,6 @@ class _HomePageState extends State<HomePage> {
                                               color: Colors.black87,
                                             ),
                                           ),
-
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment:
@@ -213,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                               const SizedBox(height: 6),
                                               Text(
-                                                task["priority"] ?? "",
+                                                priority ?? "",
                                                 style: TextStyle(
                                                   color:
                                                       priority == "High"
@@ -232,10 +231,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                     ),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Divider(thickness: 2),
                   ),
+
                   Expanded(
                     flex: 1,
                     child: AnimatedSwitcher(
@@ -245,7 +246,7 @@ class _HomePageState extends State<HomePage> {
                               ? Center(
                                 key: ValueKey('empty-completed'),
                                 child: Text(
-                                  "Not a single task is completed!!!",
+                                  "No tasks completed yet. Keep going!",
                                   style: TextStyle(color: Colors.white70),
                                 ),
                               )
@@ -262,6 +263,7 @@ class _HomePageState extends State<HomePage> {
                                   IconData taskIcon =
                                       iconOptions[iconKey] ??
                                       FontAwesomeIcons.listUl;
+
                                   return Card(
                                     key: ValueKey(
                                       "completed-${task["key"]}-${task["isChecked"]}",
@@ -283,7 +285,7 @@ class _HomePageState extends State<HomePage> {
                                       padding: const EdgeInsets.all(10),
                                       child: Row(
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Checkbox(
                                             shape: CircleBorder(),
@@ -301,25 +303,16 @@ class _HomePageState extends State<HomePage> {
                                             },
                                           ),
                                           const SizedBox(width: 8),
-                                          Container(
-                                            margin: EdgeInsets.only(
+                                          Padding(
+                                            padding: const EdgeInsets.only(
                                               right: 12,
-                                              top: 8,
                                             ),
-                                            child: Container(
-                                              margin: EdgeInsets.only(
-                                                right: 12,
-                                                top: 8,
-                                              ),
-
-                                              child: Icon(
-                                                taskIcon,
-                                                size: 24,
-                                                color: Colors.black87,
-                                              ),
+                                            child: Icon(
+                                              taskIcon,
+                                              size: 24,
+                                              color: Colors.black87,
                                             ),
                                           ),
-
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment:
@@ -365,7 +358,6 @@ class _HomePageState extends State<HomePage> {
                                                     task["key"],
                                                     updatedTask,
                                                   );
-
                                                   loadTasks();
                                                 },
                                                 child: Icon(
@@ -382,7 +374,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                               const SizedBox(height: 6),
                                               Text(
-                                                task["priority"] ?? "",
+                                                priority ?? "",
                                                 style: TextStyle(
                                                   color:
                                                       priority == "High"
