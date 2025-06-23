@@ -19,7 +19,6 @@ class _MainHomePageState extends State<MainHomePage> {
   int _currentIndex = 0;
   DateTime? pickedDate = DateTime.now();
 
-  // Dynamic pages for live data fetching
   List<Widget> get _pages => [
     HomePage(),
     FavouritePage(favTasks: TaskDB.getFavouriteTask()),

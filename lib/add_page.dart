@@ -17,6 +17,36 @@ class _AddPageState extends State<AddPage> {
   DateTime? _dueDate;
   String _priority = 'Normal';
   String _selectedIconKey = "Work";
+  TimeOfDay? _dueTime;
+
+  Future<void> _pickTime() async {
+    TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            timePickerTheme: TimePickerThemeData(
+              backgroundColor: Constants.containerColor,
+              hourMinuteTextColor: Colors.white,
+              dialHandColor: Colors.blueAccent,
+            ),
+            colorScheme: ColorScheme.dark(
+              primary: Colors.blueAccent,
+              onSurface: Colors.white,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      setState(() {
+        _dueTime = picked;
+      });
+    }
+  }
 
   Future<void> _pickDate() async {
     DateTime? picked = await showDatePicker(
@@ -60,10 +90,10 @@ class _AddPageState extends State<AddPage> {
       return;
     }
 
-    if (_dueDate == null) {
+    if (_dueDate == null || _dueTime == null) {
       Get.snackbar(
         "Missing Field",
-        "Please select a due date!",
+        "Please select both date and time!",
         backgroundColor: Colors.redAccent,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
@@ -71,11 +101,19 @@ class _AddPageState extends State<AddPage> {
       return;
     }
 
+    DateTime dueDateTime = DateTime(
+      _dueDate!.year,
+      _dueDate!.month,
+      _dueDate!.day,
+      _dueTime!.hour,
+      _dueTime!.minute,
+    );
+
     Map<String, dynamic> task = {
       "title": _taskController.text.trim(),
       "desc": _descController.text.trim(),
       "priority": _priority,
-      "dueDate": _dueDate!,
+      "dueDate": dueDateTime.toIso8601String(),
       "isCompleted": false,
       "isFavourite": false,
       "icon": _selectedIconKey,
@@ -91,12 +129,13 @@ class _AddPageState extends State<AddPage> {
       snackPosition: SnackPosition.BOTTOM,
     );
 
-    // Clear input
     _taskController.clear();
     _descController.clear();
     _priority = "Normal";
-    _dueDate = null;
     _selectedIconKey = "Work";
+    _dueDate = null;
+    _dueTime = null;
+
     setState(() {});
   }
 
@@ -110,7 +149,6 @@ class _AddPageState extends State<AddPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Task Title
               Text(
                 "Task Title",
                 style: TextStyle(fontSize: 16, color: Constants.whiteColor),
@@ -130,7 +168,6 @@ class _AddPageState extends State<AddPage> {
               ),
               SizedBox(height: 20),
 
-              // Description
               Text(
                 "Description (optional)",
                 style: TextStyle(fontSize: 16, color: Constants.whiteColor),
@@ -151,7 +188,6 @@ class _AddPageState extends State<AddPage> {
               ),
               SizedBox(height: 20),
 
-              // Due Date
               Text(
                 "Due Date",
                 style: TextStyle(fontSize: 16, color: Constants.whiteColor),
@@ -180,8 +216,34 @@ class _AddPageState extends State<AddPage> {
                 ),
               ),
               SizedBox(height: 20),
-
-              // Priority
+              Text(
+                "Due Time",
+                style: TextStyle(fontSize: 16, color: Constants.whiteColor),
+              ),
+              SizedBox(height: 8),
+              InkWell(
+                onTap: _pickTime,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        _dueTime == null
+                            ? "Select time"
+                            : _dueTime!.format(context), // 08:30 PM format
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Icon(Icons.access_time, color: Colors.grey),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
               Text(
                 "Priority",
                 style: TextStyle(fontSize: 16, color: Constants.whiteColor),
@@ -210,7 +272,6 @@ class _AddPageState extends State<AddPage> {
               ),
               SizedBox(height: 30),
 
-              // Icon
               Text(
                 "Icon",
                 style: TextStyle(fontSize: 16, color: Constants.whiteColor),
@@ -248,7 +309,6 @@ class _AddPageState extends State<AddPage> {
               ),
               SizedBox(height: 20),
 
-              // Save Button
               SizedBox(
                 width: double.infinity,
                 height: 50,
