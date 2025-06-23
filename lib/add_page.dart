@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:todolist/constants.dart';
+import 'package:todolist/task_database.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({super.key});
@@ -12,8 +12,6 @@ class AddPage extends StatefulWidget {
 }
 
 class _AddPageState extends State<AddPage> {
-  var taskIndex = 0;
-  var myBox = Hive.box("toDoListBox");
   final TextEditingController _taskController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
   DateTime? _dueDate;
@@ -43,9 +41,11 @@ class _AddPageState extends State<AddPage> {
         );
       },
     );
-    setState(() {
-      _dueDate = picked;
-    });
+    if (picked != null) {
+      setState(() {
+        _dueDate = picked;
+      });
+    }
   }
 
   void _saveTask() async {
@@ -71,34 +71,27 @@ class _AddPageState extends State<AddPage> {
       return;
     }
 
-    var task = {
+    Map<String, dynamic> task = {
       "title": _taskController.text.trim(),
       "desc": _descController.text.trim(),
       "priority": _priority,
-      "dueDate": _dueDate!.toIso8601String(),
+      "dueDate": _dueDate!,
       "isCompleted": false,
       "isFavourite": false,
       "icon": _selectedIconKey,
     };
 
-    var status = await myBox.add(task);
-    if (myBox.get(status) != null) {
-      Get.snackbar(
-        "Success",
-        "Task added successfully!",
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    } else {
-      Get.snackbar(
-        "Failure",
-        "Task not saved!",
-        backgroundColor: Colors.redAccent,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
-    }
+    await TaskDB.addTask(task);
+
+    Get.snackbar(
+      "Success",
+      "Task added successfully!",
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+      snackPosition: SnackPosition.BOTTOM,
+    );
+
+    // Clear input
     _taskController.clear();
     _descController.clear();
     _priority = "Normal";
@@ -117,6 +110,7 @@ class _AddPageState extends State<AddPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Task Title
               Text(
                 "Task Title",
                 style: TextStyle(fontSize: 16, color: Constants.whiteColor),
@@ -136,6 +130,7 @@ class _AddPageState extends State<AddPage> {
               ),
               SizedBox(height: 20),
 
+              // Description
               Text(
                 "Description (optional)",
                 style: TextStyle(fontSize: 16, color: Constants.whiteColor),
@@ -156,6 +151,7 @@ class _AddPageState extends State<AddPage> {
               ),
               SizedBox(height: 20),
 
+              // Due Date
               Text(
                 "Due Date",
                 style: TextStyle(fontSize: 16, color: Constants.whiteColor),
@@ -185,6 +181,7 @@ class _AddPageState extends State<AddPage> {
               ),
               SizedBox(height: 20),
 
+              // Priority
               Text(
                 "Priority",
                 style: TextStyle(fontSize: 16, color: Constants.whiteColor),
@@ -212,6 +209,8 @@ class _AddPageState extends State<AddPage> {
                 ),
               ),
               SizedBox(height: 30),
+
+              // Icon
               Text(
                 "Icon",
                 style: TextStyle(fontSize: 16, color: Constants.whiteColor),
@@ -249,6 +248,7 @@ class _AddPageState extends State<AddPage> {
               ),
               SizedBox(height: 20),
 
+              // Save Button
               SizedBox(
                 width: double.infinity,
                 height: 50,

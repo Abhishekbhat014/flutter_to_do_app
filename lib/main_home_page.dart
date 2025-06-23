@@ -6,6 +6,7 @@ import 'package:todolist/favourite_page.dart';
 import 'package:todolist/home_page.dart';
 import 'package:todolist/notification_page.dart';
 import 'package:todolist/profile_page.dart';
+import 'package:todolist/task_database.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});
@@ -17,15 +18,16 @@ class MainHomePage extends StatefulWidget {
 class _MainHomePageState extends State<MainHomePage> {
   int _currentIndex = 0;
   DateTime? pickedDate = DateTime.now();
-  final List<Widget> _pages = [
+
+  // Dynamic pages for live data fetching
+  List<Widget> get _pages => [
     HomePage(),
-    FavouritePage(favTasks: favoriteTask),
+    FavouritePage(favTasks: TaskDB.getFavouriteTask()),
     AddPage(),
     NotificationPage(),
     ProfilePage(),
   ];
 
-  static get favoriteTask => null;
   String _getDisplayDate(DateTime? date) {
     if (date == null) return "";
 
@@ -74,23 +76,18 @@ class _MainHomePageState extends State<MainHomePage> {
           ),
           SizedBox(width: 8),
           InkWell(
-            onTap: () {},
-            highlightColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            child: InkWell(
-              onTap: () async {
-                pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2100),
-                );
-                setState(() {});
-              },
-              child: Icon(
-                FontAwesomeIcons.solidCalendarDays,
-                color: Constants.whiteColor,
-              ),
+            onTap: () async {
+              pickedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2025),
+                lastDate: DateTime(2100),
+              );
+              setState(() {});
+            },
+            child: Icon(
+              FontAwesomeIcons.solidCalendarDays,
+              color: Constants.whiteColor,
             ),
           ),
         ],
@@ -118,27 +115,19 @@ class _MainHomePageState extends State<MainHomePage> {
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.house),
             label: "",
-            backgroundColor: Color.fromRGBO(45, 48, 72, 1),
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.solidHeart),
             label: "",
-            backgroundColor: Color.fromRGBO(45, 48, 72, 1),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.plus),
-            label: "",
-            backgroundColor: Color.fromRGBO(45, 48, 72, 1),
-          ),
+          BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.plus), label: ""),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.solidBell),
             label: "",
-            backgroundColor: Color.fromRGBO(45, 48, 72, 1),
           ),
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.solidUser),
             label: "",
-            backgroundColor: Color.fromRGBO(45, 48, 72, 1),
           ),
         ],
       ),

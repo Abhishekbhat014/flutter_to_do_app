@@ -3,11 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todolist/main_home_page.dart';
+import 'package:todolist/task_database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Hive.openBox("toDoListBox");
+  TaskDB.initDB();
   runApp(
     ScreenUtilInit(
       designSize: Size(360, 690),
