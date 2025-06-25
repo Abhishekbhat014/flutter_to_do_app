@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:todolist/constants.dart';
+import 'package:todolist/notification_service.dart';
 import 'package:todolist/task_database.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class AddPage extends StatefulWidget {
   const AddPage({super.key});
@@ -85,7 +87,7 @@ class _AddPageState extends State<AddPage> {
         "Task title is mandatory!",
         backgroundColor: Colors.redAccent,
         colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
       return;
     }
@@ -96,7 +98,7 @@ class _AddPageState extends State<AddPage> {
         "Please select both date and time!",
         backgroundColor: Colors.redAccent,
         colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
       return;
     }
@@ -126,7 +128,22 @@ class _AddPageState extends State<AddPage> {
       "Task added successfully!",
       backgroundColor: Colors.green,
       colorText: Colors.white,
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.TOP,
+    );
+
+    final scheduledTime = tz.TZDateTime(
+      tz.local,
+      dueDateTime.year,
+      dueDateTime.month,
+      dueDateTime.day,
+      dueDateTime.hour,
+      dueDateTime.minute,
+    ).subtract(const Duration(minutes: 1));
+
+    NotificationService().scheduleNotification(
+      title: "Due task",
+      body: task["title"],
+      scheduledDate: scheduledTime,
     );
 
     _taskController.clear();
@@ -135,7 +152,6 @@ class _AddPageState extends State<AddPage> {
     _selectedIconKey = "Work";
     _dueDate = null;
     _dueTime = null;
-
     setState(() {});
   }
 

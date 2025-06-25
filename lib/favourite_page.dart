@@ -79,7 +79,6 @@ class _FavouritePageState extends State<FavouritePage> {
                   final String desc = task["desc"] ?? '';
                   final String priority = task["priority"];
                   final iconData = getIconFromName(task["icon"]);
-                  print(task["icon"]);
                   final DateTime dueDate = DateTime.parse(task["dueDate"]);
                   final formattedDate = DateFormat(
                     'dd MMM yyyy – hh:mm a',
